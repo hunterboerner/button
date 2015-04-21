@@ -18,7 +18,11 @@ defmodule Button.CountController do
 
   def latest(conn, %{"ip" => ip}) do
     query = (from c in Click, where: c.ip == ^ip, select: c.last_clicked,
-    limit: 1, order_by: [desc: c.id])
-    send_resp(conn, 200, Ecto.DateTime.to_iso8601(Repo.one(query)))
+             limit: 1, order_by: [desc: c.id])
+    time = Repo.one(query)
+    case time do
+      nil -> send_resp(conn, 200, "")
+      _ -> send_resp(conn, 200, Ecto.DateTime.to_iso8601(time))
+    end
   end
 end
