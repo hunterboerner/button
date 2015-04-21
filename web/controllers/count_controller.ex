@@ -11,7 +11,7 @@ defmodule Button.CountController do
   end
 
   def create(conn, %{"ip" => ip}) do
-    click = %Click{ip: ip, last_clicked: Ecto.DateTime.local()}
+    click = %Click{ip: ip, last_clicked: Ecto.DateTime.utc()}
     |> Repo.insert
     json(conn, click)
   end
